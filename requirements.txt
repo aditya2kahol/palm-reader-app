@@ -1,0 +1,6 @@
+fastapi==0.115.12
+fastapi-cli==0.0.7
+groq==0.24.0
+Markdown==3.8
+openai==1.78.0
+pillow==11.2.1

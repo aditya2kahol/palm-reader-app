@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palm Reading App</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.0/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script> -->
+</head>
+<body>
+    <div class="container">
+        <h1 class="main-header">✋ Mystic Palm Reader ✋</h1>
+        <p class="text-center">Upload an image of your palm to discover your future!</p>
+
+        <div class="language-selector">
+            <label for="ui-language">App Language:</label>
+            <select id="ui-language" onchange="changeUILanguage()">
+                <option value="English" selected>English</option>
+                <option value="Hindi">हिंदी (Hindi)</option>
+            </select>
+        </div>
+
+        <div class="card">
+            <h2 class="sub-header" id="how-it-works-title">How it works</h2>
+            <div class="instruction" id="instructions">
+                <ol>
+                    <li>Upload an image of your palm</li>
+                    <li>Make sure your palm lines are clearly visible</li>
+                    <li>Click on 'Read My Palm' to get your personalized reading</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="sub-header" id="upload-title">Upload Your Palm Image</h2>
+            
+            <div class="upload-section">
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('upload')">Upload Image</button>
+                    <button class="tab-btn" onclick="switchTab('camera')">Take Photo</button>
+                </div>
+                
+                <div id="upload-tab" class="tab-content active">
+                    <div class="file-upload">
+                        <label for="palm-image" class="upload-label">
+                            <span id="upload-instruction">Choose an image of your palm</span>
+                            <input type="file" id="palm-image" accept="image/*" onchange="displayImage(this)">
+                        </label>
+                    </div>
+                </div>
+                
+                <div id="camera-tab" class="tab-content">
+                    <div class="camera-container">
+                        <video id="camera-preview" autoplay></video>
+                        <button id="capture-btn" onclick="capturePhoto()">
+                            <span id="camera-instruction">Take a photo</span>
+                        </button>
+                        <canvas id="canvas" style="display:none;"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="image-preview-container" style="display:none;" class="image-preview">
+                <h3>Preview</h3>
+                <img id="image-preview" src="#" alt="Palm image preview">
+            </div>
+            
+            <div class="reading-options">
+                <h3 id="reading-language-title">Select Reading Language</h3>
+                <select id="reading-language">
+                    <option value="English">English</option>
+                    <option value="Hindi">Hindi</option>
+                </select>
+                
+                <button id="read-palm-btn" onclick="getPalmReading()" disabled>
+                    ✨ Read My Palm ✨
+                </button>
+            </div>
+        </div>
+        
+        <div id="reading-result-container" class="card" style="display:none;">
+            <h2 class="sub-header" id="reading-header">Your Palm Reading</h2>
+            <div id="loading-spinner" class="spinner" style="display:none;">
+                <div class="spinner-inner"></div>
+                <p id="spinner-text">The mystic forces are analyzing your palm...</p>
+            </div>
+            <div id="reading-result" class="reading-result"></div>
+            <p id="try-again-text" class="text-center">
+                Wasn't satisfied with your reading? Try again with a clearer image!
+            </p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', path='/js/script.js') }}"></script>
+</body>
+</html>
