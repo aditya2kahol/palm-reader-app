@@ -5,8 +5,8 @@ from fastapi.templating import Jinja2Templates
 # from pydantic import BaseModel
 import base64
 import os
-from groq import Groq
-# from openai import OpenAI
+# from groq import Groq
+from openai import OpenAI
 from PIL import Image
 import io
 # import uvicorn
@@ -45,8 +45,8 @@ async def get_palm_reading(image_bytes, language="English"):
     base64_image = encode_image(image_bytes)
     
     # Get API key from environment variable
-    api_key = os.environ.get("GROQ_API_KEY")
-    # api_key = os.environ.get("OPENAI_API_KEY")
+    # api_key = os.environ.get("GROQ_API_KEY")
+    api_key = os.environ.get("OPENAI_API_KEY")
     
     if not api_key:
         raise HTTPException(status_code=500, detail="GROQ API key not found. Please set the GROQ_API_KEY environment variable.")
@@ -74,31 +74,8 @@ Organize your report in sections. For any challenging signs, respond with care a
         user_prompt = "Please analyze this palm image and give me a detailed analysis report in English Language."
     
     try:
-        # response = client.chat.completions.create(
-        #     model="gpt-4o-mini",
-        #     messages=[
-        #         {
-        #             "role": "system",
-        #             "content": system_prompt
-        #         },
-        #         {
-        #             "role": "user",
-        #             "content": [
-        #                 {"type": "text", "text": user_prompt},
-        #                 {
-        #                     "type": "image_url",
-        #                     "image_url": {
-        #                         "url": f"data:image/jpeg;base64,{base64_image}",
-        #                     }
-        #                 },
-        #             ],
-        #         }
-        #     ],
-        #     max_tokens=150,
-        # )
-        # return response.choices[0].message.content
-
-        chat_completion = client.chat.completions.create(
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
             messages=[
                 {
                     "role": "system",
@@ -112,17 +89,39 @@ Organize your report in sections. For any challenging signs, respond with care a
                             "type": "image_url",
                             "image_url": {
                                 "url": f"data:image/jpeg;base64,{base64_image}",
-                            },
+                            }
                         },
                     ],
                 }
             ],
-            model="meta-llama/llama-4-scout-17b-16e-instruct",
-            max_completion_tokens=1024,
-            temperature=0.5,
+            max_tokens=1024,
         )
-        return chat_completion.choices[0].message.content
-    
+        return response.choices[0].message.content
+
+        # chat_completion = client.chat.completions.create(
+        #     messages=[
+        #         {
+        #             "role": "system",
+        #             "content": system_prompt
+        #         },
+        #         {
+        #             "role": "user",
+        #             "content": [
+        #                 {"type": "text", "text": user_prompt},
+        #                 {
+        #                     "type": "image_url",
+        #                     "image_url": {
+        #                         "url": f"data:image/jpeg;base64,{base64_image}",
+        #                     },
+        #                 },
+        #             ],
+        #         }
+        #     ],
+        #     model="meta-llama/llama-4-scout-17b-16e-instruct",
+        #     max_completion_tokens=1024,
+        #     temperature=0.5,
+        # )
+        # return chat_completion.choices[0].message.content
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error during API call: {str(e)}")
 
