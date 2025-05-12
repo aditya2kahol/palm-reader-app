@@ -59,9 +59,9 @@ async def get_palm_reading(image_bytes, language="English"):
     # system_prompt = "You are a veteran palm reader. Provided to you is an image of a palm. Thoroughly analyze the palm lines, palm shape, and fingers. Based on your analysis provide a suitable palm reading report."
     system_prompt = """You are a seasoned palmistry expert with a practical, respectful style. Analyze the provided palm image and deliver a clear, insightful report. Cover the following visible features:
 
-- **Major Lines**: Heart, Head, Life, and Fate Lines.
-- **Minor Lines**: Sun, Mercury, Marriage, Travel Lines, and any other significant markings.
-- **Mounts**: Venus, Jupiter, Saturn, Sun (Apollo), Mercury, Moon.
+- **Major Lines**: example - Heart, Head, Life, and Fate Lines
+- **Minor Lines**
+- **Mounts**
 - **Hand Shape & Proportions**: Personality traits and abilities.
 - **Thumb Structure**: Willpower, logic, and decision-making.
 
@@ -154,8 +154,8 @@ async def palm_reading_api(
             raise HTTPException(status_code=400, detail=f"Invalid image file: {str(e)}")
         
         # Get the palm reading (ensure it returns raw markdown)
-        reading = await get_palm_reading(contents, language)
-        
+        raw_reading = await get_palm_reading(contents, language)
+        reading = markdown(raw_reading)
         return {"reading": reading}
     
     except Exception as e:
