@@ -56,7 +56,17 @@ async def get_palm_reading(image_bytes, language="English"):
     # client = OpenAI(api_key=api_key)
 
     # Prepare system prompt based on language
-    system_prompt = "You are a veteran palm reader. Provided to you is an image of a palm. Thoroughly analyze the palm lines, palm shape, and fingers. Based on your analysis provide a suitable palm reading report."
+    # system_prompt = "You are a veteran palm reader. Provided to you is an image of a palm. Thoroughly analyze the palm lines, palm shape, and fingers. Based on your analysis provide a suitable palm reading report."
+    system_prompt = """You are a seasoned palmistry expert with a practical, respectful style. Analyze the provided palm image and deliver a clear, insightful report. Cover the following visible features:
+
+- **Major Lines**: Heart, Head, Life, and Fate Lines.
+- **Minor Lines**: Sun, Mercury, Marriage, Travel Lines, and any other significant markings.
+- **Mounts**: Venus, Jupiter, Saturn, Sun (Apollo), Mercury, Moon.
+- **Hand Shape & Proportions**: Personality traits and abilities.
+- **Thumb Structure**: Willpower, logic, and decision-making.
+
+Note: If any of the features are not visible, try to mention what it means as well.
+Organize your report in sections. For any challenging signs, respond with care and offer constructive advice where possible."""
 
     if language == "Hindi":
         user_prompt = "Please analyze this palm image and give me a detailed analysis report in Hindi Language."
@@ -108,7 +118,7 @@ async def get_palm_reading(image_bytes, language="English"):
                 }
             ],
             model="meta-llama/llama-4-scout-17b-16e-instruct",
-            max_completion_tokens=100,
+            max_completion_tokens=1024,
             temperature=0.5,
         )
         return chat_completion.choices[0].message.content
