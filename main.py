@@ -52,8 +52,8 @@ async def get_palm_reading(image_bytes, language="English"):
         raise HTTPException(status_code=500, detail="GROQ API key not found. Please set the GROQ_API_KEY environment variable.")
     
     # Create model client
-    client = Groq(api_key=api_key)
-    # client = OpenAI(api_key=api_key)
+    # client = Groq(api_key=api_key)
+    client = OpenAI(api_key=api_key)
 
     # Prepare system prompt based on language
     # system_prompt = "You are a veteran palm reader. Provided to you is an image of a palm. Thoroughly analyze the palm lines, palm shape, and fingers. Based on your analysis provide a suitable palm reading report."
