@@ -156,7 +156,7 @@ async def palm_reading_api(
         # Get the palm reading (ensure it returns raw markdown)
         reading = await get_palm_reading(contents, language)
         
-        return {"reading": markdown(reading)}
+        return {"reading": reading}
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing the image: {str(e)}")
