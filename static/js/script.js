@@ -215,7 +215,7 @@ function getPalmReading() {
         // Display reading result
         if (response.data && response.data.reading) {
             // Set text content to display raw text
-            document.getElementById('reading-result').innerHTML = response.data.reading;
+            document.getElementById('reading-result').textContent = response.data.reading;
         } else {
             document.getElementById('reading-result').textContent = "Sorry, we couldn't generate a reading. Please try again with a clearer image.";
         }
